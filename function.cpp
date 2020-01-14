@@ -10,48 +10,50 @@ void init() {
 	// ÉvÉåÉCÉÑÅ[
 	player.x= 100;
 	player.y= 200;
-	player.height= 50;
-	player.width= 50;
+	player.height= 64;
+	player.width= 64;
 	player.acc= 8;
 	player.life= 5;
+	player.graph = LoadGraph("Data/graph/player.png");
 
 	// íeä€
 	for(int i = 0; i < SHOT_NUM; i++) {
 		shot[i].x = 0;
 		shot[i].y = 0;
-		shot[i].height = 10;
-		shot[i].width = 10;
 		shot[i].acc = 10;
 		shot[i].life = 0;
+		shot[i].graph = LoadGraph("Data/graph/shot.png"); 
+		GetGraphSize(shot[i].graph, &shot[i].width, &shot[i].height);
 	}
 
 	// ìG
 	for(int i = 0; i < ENEMY_NUM; i++) {
 		enemy[i].x = 0;
 		enemy[i].y = 0;
-		enemy[i].height = 50;
-		enemy[i].width = 50;
+		enemy[i].height = 64;
+		enemy[i].width = 64;
 		enemy[i].acc = 5;
 		enemy[i].life = 0;
+		enemy[i].graph = LoadGraph("Data/graph/enemy.png");
 	}
 }
 
 // ï`âÊä÷êî
 void draw() {
 	// ÉvÉåÉCÉÑÅ[ÇÃï`âÊ
-	DrawBox(player.x, player.y, player.x+ player.width, player.y+ player.height, GetColor(255, 0, 0), TRUE);
+	DrawExtendGraph(player.x, player.y, player.x + player.width, player.y + player.height, player.graph, TRUE);
 	DrawFormatString(player.x, player.y, GetColor(0, 0, 0), "%d", player.life);
 
 	// íeä€ÇÃï`âÊ
 	for(int i = 0; i < SHOT_NUM; i++) {
 		if(shot[i].life > 0)
-			DrawBox(shot[i].x, shot[i].y, shot[i].x + shot[i].width, shot[i].y + shot[i].height, GetColor(255, 255, 255), TRUE);
+			DrawGraph(shot[i].x, shot[i].y, shot[i].graph, TRUE);
 	}
 
 	// ìGÇÃï`âÊ
 	for(int i = 0; i < ENEMY_NUM; i++) {
 		if(enemy[i].life > 0) {
-			DrawBox(enemy[i].x, enemy[i].y, enemy[i].x + enemy[i].width, enemy[i].y + enemy[i].height, GetColor(0, 0, 255), TRUE);
+			DrawExtendGraph(enemy[i].x, enemy[i].y, enemy[i].x + enemy[i].width, enemy[i].y + enemy[i].height, enemy[i].graph, TRUE);
 			DrawFormatString(enemy[i].x, enemy[i].y, GetColor(0, 0, 0), "%d", enemy[i].life);
 		}
 	}
@@ -122,8 +124,9 @@ void moveShot() {
 			if(shot[i].life == 0) {
 				shot[i].life = 1;
 				shot[i].x = player.x + player.width;
-				shot[i].y = player.y + player.height / 2;
-				lug = 10; break;
+				shot[i].y = player.y;
+				lug = 10; 
+				break;
 			}
 		}
 	}
