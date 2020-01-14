@@ -6,6 +6,7 @@ Actor shot[SHOT_NUM];// 弾丸
 Actor enemy[ENEMY_NUM];// 敵
 
 int mode;//ゲームモード管理用変数
+int score; // スコア
 
 //ゲーム全体の流れを構成していく
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
@@ -21,9 +22,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetFontSize(30);
 
 	int t0;
-	mode = GAME;
-
-	init();
+	mode = TITLE;
 
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		t0 = GetNowCount();
@@ -31,14 +30,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		switch (mode) {
 		case TITLE:	// タイトル画面
+			title();
 			break;
 		case GAME:	// ゲーム画面
-			draw();
-			movePlayer();
-			moveShot();
-			moveEnemy();
+			game();
 			break;
 		case OVER:	// ゲームオーバー画面
+			over();
 			break;
 		default:
 			break;

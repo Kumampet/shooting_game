@@ -4,6 +4,9 @@
 
 // 初期化関数
 void init() {
+	// スコア
+	score = 0;
+
 	// プレイヤー
 	player.x= 100;
 	player.y= 200;
@@ -52,6 +55,9 @@ void draw() {
 			DrawFormatString(enemy[i].x, enemy[i].y, GetColor(0, 0, 0), "%d", enemy[i].life);
 		}
 	}
+
+	// スコアの描画
+	DrawFormatString(420, 10, GetColor(255, 255, 255), "SCORE: %6d", score);
 }
 
 //プレイヤーの移動関数
@@ -86,6 +92,19 @@ void movePlayer() {
 		// 画面外へ行かないようにする
 		if(player.y < 0) {
 			player.y = 0;
+		}
+	}
+
+	// プレイヤーと敵の当たり判定
+	for (int i = 0; i < ENEMY_NUM; i++) {
+		if (enemy[i].life > 0) {
+			if (hit(player, enemy[i]) == 1) {
+				player.life--;
+				enemy[i].life = 0;
+				// ゲームオーバー判定
+				if (player.life == 0)
+					mode = OVER;
+			}
 		}
 	}
 }
@@ -146,6 +165,9 @@ void moveEnemy() {
 					if (hit(enemy[i], shot[j]) == 1) {
 						enemy[i].life--;
 						shot[j].life = 0;
+						// 敵を倒したらスコア加算
+						if (enemy[i].life == 0)
+							score += 1000;
 					}
 				}
 			}
@@ -167,5 +189,33 @@ int hit(Actor a1, Actor a2) {
 	// ぶつかっていない
 	else
 		return 0;
+}
+
+// タイトル画面
+void title() {
+	DrawFormatString(100, 100, GetColor(255, 255, 255), "タイトル");
+	// Zキーが押されたら、ゲームを開始する
+	if (CheckHitKey(KEY_INPUT_Z) > 0) {
+		init();
+		mode = GAME;
+	}
+}
+
+// ゲーム画面
+void game() {
+	movePlayer();
+	moveShot();
+	moveEnemy();
+	draw();
+}
+
+// ゲームオーバー画面
+void over() {
+	DrawFormatString(100, 100, GetColor(255, 255, 255), "ゲームオーバー");
+	DrawFormatString(100, 150, GetColor(255, 255, 255), "スペースキーでタイトルに戻る");
+	// Spaceキーが押されたら、タイトル画面へ移動する
+	if (CheckHitKey(KEY_INPUT_SPACE) > 0) {
+		mode = TITLE;
+	}
 }
 

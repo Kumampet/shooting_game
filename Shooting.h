@@ -32,6 +32,10 @@ void movePlayer();// プレイヤーの移動関数
 void moveShot();// 弾丸の移動関数
 void moveEnemy();// 敵の移動関数
 int hit(Actor, Actor); // 当たり判定
+extern int score; // スコア
 
+void title(); // タイトル画面
+void game(); // ゲーム画面
+void over(); // ゲームオーバー画面
 
 #endif
