@@ -140,6 +140,15 @@ void moveEnemy() {
 	for(int i = 0; i < ENEMY_NUM; i++) {
 		if(enemy[i].life > 0) {
 			enemy[i].x -= enemy[i].acc;
+			// 敵と弾丸の当たり判定
+			for (int j = 0; j < SHOT_NUM; j++) {
+				if (shot[j].life > 0) {
+					if (hit(enemy[i], shot[j]) == 1) {
+						enemy[i].life--;
+						shot[j].life = 0;
+					}
+				}
+			}
 			// 画面外に出たらライフを0にする(描画しない)
 			if(enemy[i].x + enemy[i].width < 0) {
 				enemy[i].x = 0;
@@ -148,5 +157,15 @@ void moveEnemy() {
 			}
 		}
 	}
+}
+
+// 当たり判定
+int hit(Actor a1, Actor a2) {
+	// ぶつかっている
+	if (a1.x < a2.x + a2.width && a2.x < a1.x + a1.width && a1.y < a2.y + a2.height && a2.y < a1.y + a1.height)
+		return 1;
+	// ぶつかっていない
+	else
+		return 0;
 }
 

@@ -31,5 +31,7 @@ void draw();// •`‰æŠÖ”
 void movePlayer();// ƒvƒŒƒCƒ„[‚ÌˆÚ“®ŠÖ”
 void moveShot();// ’eŠÛ‚ÌˆÚ“®ŠÖ”
 void moveEnemy();// “G‚ÌˆÚ“®ŠÖ”
+int hit(Actor, Actor); // “–‚½‚è”»’è
+
 
 #endif
